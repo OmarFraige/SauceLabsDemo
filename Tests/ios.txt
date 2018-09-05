@@ -1,0 +1,10 @@
+*** Test Cases ***
+Open App
+    [Documentation]    Opens the application from the device and system selected.
+    ...    Also create a path to save the screenshots.
+    ...    A screenshot is taken after the application is opened.
+    Open Application    ${SL_URL}    platformName=iOS    platformVersion=${platformVersion}    deviceName=iPad Air 2    udid=${udid}    automationName=XCUITest
+    ...    bundleId=${BundleId}    newCommandTimeout=200    noReset=True    testobject_api_key=29B2B73D3D0648FDAB70115B1E92ED0F
+    Create Path
+    AppiumLibrary.Wait Until Page Contains Element    //XCUIElementTypeCollectionView    20s
+    Capture Screenshot Mobile    Open_Application

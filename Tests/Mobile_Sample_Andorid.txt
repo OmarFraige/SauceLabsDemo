@@ -1,0 +1,38 @@
+*** Settings ***
+Test Teardown     Status Sauce
+Library           AppiumLibrary
+Library           ../Resources/SauceLabs.py
+Library           Process
+
+*** Variables ***
+${URL}            https://us1.appium.testobject.com/wd/hub
+
+*** Test Cases ***
+POC
+    [Tags]    Android
+    Open APP
+
+*** Keywords ***
+Open APP
+    Log    Open aplication is starting
+    Open Application    ${URL}    platformName=Android    platformVersion=7.1    deviceName=Samsung_Galaxy_S6_sjc_free    automationName=appium    appActivity=org.openintents.shopping.ShoppingActivity
+    ...    autoGrantPermissions=true    appPackage=com.specialtys.specialtyscafeandbaker    testobject_api_key=A543CC512A474792BFF905FC1873C32A    testobject_suite_id=7    testobject_test_name="POC Mobile"    testobject_suite_name=AndroidTest
+    ...    Appium Endpoint= https://us1.appium.testobject.com/wd/hub
+    Log    The application has been opened
+    Capture Page Screenshot
+    Tap    accessibility_id=More options
+    Tap    xpath=//android.widget.TextView[@text="New list"]
+    Input Text    id=edittext    POC Android Mobile
+    Tap    id=button1
+    Log    List Created
+    Capture Page Screenshot
+
+Status Sauce
+    Run Keyword If Test Passed    Status update Pass
+    Run Keyword If Test Passed    Status update Fail
+
+Status update Pass
+    Run Process    curl -X PUT -s -d "{\"passed\": true}"    -u OmFra0:f102e8aa-c3d3-4cb0-b48c-4dd0cd21ce69    https://saucelabs.com/rest/v1/OmFra0/jobs/9b56c2dc-7e75-4785-8c4a-46424a30637b
+
+Status update Fail
+    Run Process    curl -X PUT -s -d "{\"passed\": false}"    -u OmFra0:f102e8aa-c3d3-4cb0-b48c-4dd0cd21ce69    https://saucelabs.com/rest/v1/OmFra0/jobs/7
